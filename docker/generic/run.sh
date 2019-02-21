@@ -68,4 +68,5 @@ $DOCKER_CMD run $RUN_ARG \
     -u autoware \
     --privileged -v /dev/bus/usb:/dev/bus/usb \
     --net=host \
-    autoware-${1}${TAG_SUFFIX}
+    twbabyduck/autoware:1.9.1-kinetic-opengl
+
