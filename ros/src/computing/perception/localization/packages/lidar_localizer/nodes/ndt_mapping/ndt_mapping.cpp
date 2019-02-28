@@ -452,7 +452,7 @@ static void imu_callback(const sensor_msgs::Imu::Ptr& input)
 
 static void points_callback(const sensor_msgs::PointCloud2::ConstPtr& input)
 {
-  double r;
+  double r2;
   pcl::PointXYZI p;
   pcl::PointCloud<pcl::PointXYZI> tmp, scan;
   pcl::PointCloud<pcl::PointXYZI>::Ptr filtered_scan_ptr(new pcl::PointCloud<pcl::PointXYZI>());
@@ -475,8 +475,8 @@ static void points_callback(const sensor_msgs::PointCloud2::ConstPtr& input)
     p.z = (double)item->z;
     p.intensity = (double)item->intensity;
 
-    r = sqrt(pow(p.x, 2.0) + pow(p.y, 2.0));
-    if (min_scan_range < r && r < max_scan_range)
+    r2 = p.x * p.x + p.y * p.y;
+    if ((min_scan_range * min_scan_range) < r2 && r2 < (max_scan_range * max_scan_range))
     {
       scan.push_back(p);
     }
