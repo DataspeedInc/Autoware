@@ -1,4 +1,4 @@
-#!/bin/bash
+
 
 # Default settings
 CUDA="on"
@@ -141,6 +141,7 @@ docker run \
     --env="USER_ID=$(id -u)" \
     --privileged \
     --net=host \
+    dataspeedinc/autoware:1.9.1
     $RUNTIME \
     $IMAGE
 
