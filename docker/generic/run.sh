@@ -5,8 +5,10 @@ usage() { echo "Usage: $0 [-t <tag>] [-r <repo>] [-s <Shared directory>]" 1>&2; 
 # Defaults
 XSOCK=/tmp/.X11-unix
 XAUTH=/home/$USER/.Xauthority
-SHARED_DIR=/home/autoware/.autoware
-HOST_DIR=/home/$USER/shared_dir
+SHARED_MAP_DATA_DIR=/home/autoware/.autoware
+SHARED_ROS_DIR=/home/autoware/Autoware/ros/src/external_ros
+HOST_MAP_DATA_DIR=/home/$USER/autoware_bags
+HOST_ROS_DIR=/home/$USER/autoware_ws/src
 DOCKER_HUB_REPO="autoware/autoware"
 TAG="latest-kinetic"
 
@@ -62,11 +64,12 @@ $DOCKER_CMD run $RUN_ARG \
     -it --rm \
     --volume=$XSOCK:$XSOCK:rw \
     --volume=$XAUTH:$XAUTH:rw \
-    --volume=$HOST_DIR:$SHARED_DIR:rw \
+    --volume=$HOST_MAP_DATA_DIR:$SHARED_MAP_DATA_DIR:rw \
+    --volume=$HOST_ROS_DIR:$SHARED_ROS_DIR:rw \
     --env="XAUTHORITY=${XAUTH}" \
     --env="DISPLAY=${DISPLAY}" \
     -u autoware \
     --privileged -v /dev/bus/usb:/dev/bus/usb \
     --net=host \
-    twbabyduck/autoware:1.9.1-kinetic-opengl
+    dataspeedinc/autoware:1.9.1
 
