@@ -71,7 +71,7 @@ static void scan_callback(const sensor_msgs::PointCloud2::ConstPtr& input)
   int points_num = scan.size();
   int step = points_num / sample_num;
 
-  if(scan.points.size() >= sample_num)
+  if(scan.points.size() >= (size_t)sample_num)
   {
     for (int i = 0; i < points_num; i++)
     {

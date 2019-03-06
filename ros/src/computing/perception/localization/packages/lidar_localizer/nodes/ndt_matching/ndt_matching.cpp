@@ -209,7 +209,6 @@ static double predict_pose_error = 0.0;
 static double _tf_x, _tf_y, _tf_z, _tf_roll, _tf_pitch, _tf_yaw;
 static Eigen::Matrix4f tf_btol;
 
-static std::string _localizer = "velodyne";
 static std::string _offset = "linear";  // linear, zero, quadratic
 
 static ros::Publisher ndt_reliability_pub;
@@ -1556,11 +1555,6 @@ int main(int argc, char** argv)
   private_nh.getParam("imu_upside_down", _imu_upside_down);
   private_nh.getParam("imu_topic", _imu_topic);
 
-  if (nh.getParam("localizer", _localizer) == false)
-  {
-    std::cout << "localizer is not set." << std::endl;
-    return 1;
-  }
   if (nh.getParam("tf_x", _tf_x) == false)
   {
     std::cout << "tf_x is not set." << std::endl;
@@ -1604,7 +1598,6 @@ int main(int argc, char** argv)
   std::cout << "use_imu: " << _use_imu << std::endl;
   std::cout << "imu_upside_down: " << _imu_upside_down << std::endl;
   std::cout << "imu_topic: " << _imu_topic << std::endl;
-  std::cout << "localizer: " << _localizer << std::endl;
   std::cout << "(tf_x,tf_y,tf_z,tf_roll,tf_pitch,tf_yaw): (" << _tf_x << ", " << _tf_y << ", " << _tf_z << ", "
             << _tf_roll << ", " << _tf_pitch << ", " << _tf_yaw << ")" << std::endl;
   std::cout << "-----------------------------------------------------------------" << std::endl;
