@@ -220,6 +220,7 @@ static bool _use_imu = false;
 static bool _use_odom = false;
 static bool _imu_upside_down = false;
 static bool _output_log_data = false;
+static bool _pub_tf = true;
 
 static std::string _imu_topic = "/imu_raw";
 
@@ -1362,14 +1363,16 @@ static void points_callback(const sensor_msgs::PointCloud2::ConstPtr& input)
     // Send TF "/base_link" to "/map"
     transform.setOrigin(tf::Vector3(current_pose.x, current_pose.y, current_pose.z));
     transform.setRotation(current_q);
-    //    br.sendTransform(tf::StampedTransform(transform, current_scan_time, "/map", "/base_link"));
-    if (_use_local_transform == true)
-    {
-      br.sendTransform(tf::StampedTransform(local_transform * transform, current_scan_time, "/map", "/base_link"));
-    }
-    else
-    {
-      br.sendTransform(tf::StampedTransform(transform, current_scan_time, "/map", "/base_link"));
+    if (_pub_tf) {
+      //    br.sendTransform(tf::StampedTransform(transform, current_scan_time, "/map", "/base_link"));
+      if (_use_local_transform == true)
+      {
+        br.sendTransform(tf::StampedTransform(local_transform * transform, current_scan_time, "/map", "/base_link"));
+      }
+      else
+      {
+        br.sendTransform(tf::StampedTransform(transform, current_scan_time, "/map", "/base_link"));
+      }
     }
 
     matching_end = std::chrono::system_clock::now();
@@ -1554,6 +1557,7 @@ int main(int argc, char** argv)
   private_nh.getParam("use_odom", _use_odom);
   private_nh.getParam("imu_upside_down", _imu_upside_down);
   private_nh.getParam("imu_topic", _imu_topic);
+  private_nh.param("pub_tf", _pub_tf, true);
 
   if (nh.getParam("tf_x", _tf_x) == false)
   {
