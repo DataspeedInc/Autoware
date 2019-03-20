@@ -462,8 +462,8 @@ void checkClusterMerge(size_t in_cluster_id, std::vector<ClusterPtr> &in_cluster
     if (i != in_cluster_id && !in_out_visited_clusters[i])
     {
       pcl::PointXYZ point_b = in_clusters[i]->GetCentroid();
-      double distance = sqrt(pow(point_b.x - point_a.x, 2) + pow(point_b.y - point_a.y, 2));
-      if (distance <= in_merge_threshold)
+      double distance2 = (point_b.x - point_a.x) * (point_b.x - point_a.x) + (point_b.y - point_a.y) * (point_b.y - point_a.y);
+      if (distance2 <= (in_merge_threshold * in_merge_threshold))
       {
         in_out_visited_clusters[i] = true;
         out_merge_indices.push_back(i);
@@ -591,21 +591,21 @@ void segmentByDistance(const pcl::PointCloud<pcl::PointXYZ>::Ptr in_cloud_ptr,
       current_point.y = in_cloud_ptr->points[i].y;
       current_point.z = in_cloud_ptr->points[i].z;
 
-      float origin_distance = sqrt(pow(current_point.x, 2) + pow(current_point.y, 2));
+      float origin_distance2 = current_point.x * current_point.x + current_point.y * current_point.y;
 
-      if (origin_distance < _clustering_ranges[0])
+      if (origin_distance2 < (_clustering_ranges[0] * _clustering_ranges[0]))
       {
         cloud_segments_array[0]->points.push_back(current_point);
       }
-      else if (origin_distance < _clustering_ranges[1])
+      else if (origin_distance2 < (_clustering_ranges[1] * _clustering_ranges[1]))
       {
         cloud_segments_array[1]->points.push_back(current_point);
 
-      }else if (origin_distance < _clustering_ranges[2])
+      }else if (origin_distance2 < (_clustering_ranges[2] * _clustering_ranges[2]))
       {
         cloud_segments_array[2]->points.push_back(current_point);
 
-      }else if (origin_distance < _clustering_ranges[3])
+      }else if (origin_distance2 < (_clustering_ranges[3] * _clustering_ranges[3]))
       {
         cloud_segments_array[3]->points.push_back(current_point);
 
@@ -831,8 +831,8 @@ void removePointsUpTo(const pcl::PointCloud<pcl::PointXYZ>::Ptr in_cloud_ptr,
   out_cloud_ptr->points.clear();
   for (unsigned int i = 0; i < in_cloud_ptr->points.size(); i++)
   {
-    float origin_distance = sqrt(pow(in_cloud_ptr->points[i].x, 2) + pow(in_cloud_ptr->points[i].y, 2));
-    if (origin_distance > in_distance)
+    float origin_distance2 = in_cloud_ptr->points[i].x * in_cloud_ptr->points[i].x + in_cloud_ptr->points[i].y * in_cloud_ptr->points[i].y;
+    if (origin_distance2 > (in_distance * in_distance))
     {
       out_cloud_ptr->points.push_back(in_cloud_ptr->points[i]);
     }
