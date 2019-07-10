@@ -47,3 +47,8 @@ ENV/
 *.csv
 
 /.metadata/
+
+# ROS build files
+build/
+devel/
+ros/src/CMakeLists.txt
